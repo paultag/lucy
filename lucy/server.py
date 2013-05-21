@@ -65,7 +65,7 @@ class LucyInterface(object):
     def submit_report(self, job, report):
         job = Job.load(job)
         if job.is_finished():
-            raise ValueError("Job has already been submited")
+            raise ValueError("Job is finished")
 
         builder = job.get_builder()
         builder = builder['_id'] if builder else None
@@ -77,11 +77,15 @@ class LucyInterface(object):
                    job=job['_id'],
                    report=report,
                    package=job['package'])
-        report = r.save()
+        return r.save()
+
+    def close_job(self, job):
+        job = Job.load(job)
+        if job.is_finished():
+            raise ValueError("job is already closed")
 
         job['finished_at'] = dt.datetime.utcnow()
-        job.save()
-        return report
+        return job.save()
 
 
 def serve(server, port):
