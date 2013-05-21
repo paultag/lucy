@@ -108,9 +108,9 @@ def serve(server, port):
     server.serve_forever()
 
 
-if __name__ == "__main__":
-    main()
-
-
 def main():
     serve("localhost", 20017)
+
+
+if __name__ == "__main__":
+    main()

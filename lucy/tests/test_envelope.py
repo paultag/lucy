@@ -8,7 +8,6 @@ foo
 bar"""
 
 
-
 def test_env_round_trip():
     env = Envelope.load(tfoo)
     assert env['hello'] == 'world'

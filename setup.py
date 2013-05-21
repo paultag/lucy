@@ -18,7 +18,7 @@ setup(
     license="Expat",
     url="http://deb.io/",
     platforms=['any'],
-    entry_points = {
+    entry_points={
         'console_scripts': [
             'lucy-nuke = lucy.cli.nuke:main',
             'lucy-process-incoming = lucy.cli.incoming:main',
