@@ -1,0 +1,32 @@
+{
+    "configs": [
+        {
+            "_id": "default",
+            "incoming": "/srv/lucy.pault.ag/incoming",
+            "job_classes": [
+                "lintian"
+            ],
+            "pool": "/srv/lucy.pault.ag/pool"
+        }
+    ],
+    "machines": [
+        {
+            "_id": "leliel",
+            "auth": "password",
+            "owner": "paultag"
+        },
+        {
+            "_id": "loki",
+            "auth": "password",
+            "owner": "paultag"
+        }
+    ],
+    "users": [
+        {
+            "_id": "paultag",
+            "email": "tag@pault.ag",
+            "gpg": "57DC4BD33F73E0CDBA98D22AF7EBEE8EB7982329",
+            "name": "Paul R. Tagliamonte"
+        }
+    ]
+}

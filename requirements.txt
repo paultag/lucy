@@ -1,0 +1,4 @@
+pymongo
+nose
+clint
+-e git://github.com/fantix/gevent.git#egg=gevent
