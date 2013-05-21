@@ -4,7 +4,8 @@
             "_id": "default",
             "incoming": "/srv/lucy.pault.ag/incoming",
             "job_classes": [
-                "lintian"
+                "source",
+                "amd64"
             ],
             "pool": "/srv/lucy.pault.ag/pool"
         }
