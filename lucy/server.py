@@ -1,10 +1,12 @@
 from lucy.models.machine import Machine
 from lucy.models.report import Report
+from lucy.models.job import Job
 
 from xmlrpc.server import SimpleXMLRPCServer
 from xmlrpc.server import SimpleXMLRPCRequestHandler
 
 from base64 import b64decode
+import datetime as dt
 import socketserver
 import threading
 
@@ -45,11 +47,37 @@ class LucyInterface(object):
     def identify(self):
         return NAMESPACE.machine['_id']
 
-    def submit_report(self, package, report):
+    def get_next_job(self, job_type):
+        ajobs = list(Job.assigned_jobs(NAMESPACE.machine['_id']))
+        if len(ajobs) != []:
+            return dict(ajobs[0])
+
+        job = Job.next_job(type=job_type)
+        job['builder'] = NAMESPACE.machine['_id']
+        job['assigned_at'] = dt.datetime.utcnow()
+        job.save()
+        return dict(job)
+
+    def submit_report(self, job, report):
+        job = Job.load(job)
+        if job.is_finished():
+            raise ValueError("Job has already been submited")
+
+        builder = job.get_builder()
+        builder = builder['_id'] if builder else None
+
+        if builder != NAMESPACE.machine['_id']:
+            raise ValueError("Machine isn't assigned.")
+
         r = Report(builder=NAMESPACE.machine['_id'],
+                   job=job['_id'],
                    report=report,
-                   package=package)
-        return r.save()
+                   package=job['package'])
+        report = r.save()
+
+        job['finished_at'] = dt.datetime.utcnow()
+        job.save()
+        return report
 
 
 def serve(server, port):
