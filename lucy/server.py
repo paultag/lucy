@@ -49,10 +49,14 @@ class LucyInterface(object):
 
     def get_next_job(self, job_type):
         ajobs = list(Job.assigned_jobs(NAMESPACE.machine['_id']))
-        if len(ajobs) != []:
+        if ajobs != []:
             return dict(ajobs[0])
 
-        job = Job.next_job(type=job_type)
+        try:
+            job = Job.next_job(type=job_type)
+        except KeyError:
+            return None
+
         job['builder'] = NAMESPACE.machine['_id']
         job['assigned_at'] = dt.datetime.utcnow()
         job.save()
