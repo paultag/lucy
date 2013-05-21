@@ -13,6 +13,10 @@ import threading
 NAMESPACE = threading.local()
 
 
+def get_builder_id():
+    return NAMESPACE.machine['_id']
+
+
 class LucyAuthMixIn(SimpleXMLRPCRequestHandler):
     def authenticate(self):
         (basic, _, encoded) = self.headers.get('Authorization').partition(' ')
@@ -45,10 +49,10 @@ class LucyInterface(object):
         return "1.0"
 
     def identify(self):
-        return NAMESPACE.machine['_id']
+        return get_builder_id()
 
     def get_next_job(self, job_type):
-        ajobs = list(Job.assigned_jobs(NAMESPACE.machine['_id']))
+        ajobs = list(Job.assigned_jobs(get_builder_id()))
         if ajobs != []:
             return dict(ajobs[0])
 
@@ -57,7 +61,7 @@ class LucyInterface(object):
         except KeyError:
             return None
 
-        job['builder'] = NAMESPACE.machine['_id']
+        job['builder'] = get_builder_id()
         job['assigned_at'] = dt.datetime.utcnow()
         job.save()
         return dict(job)
@@ -70,10 +74,10 @@ class LucyInterface(object):
         builder = job.get_builder()
         builder = builder['_id'] if builder else None
 
-        if builder != NAMESPACE.machine['_id']:
+        if builder != get_builder_id():
             raise ValueError("Machine isn't assigned.")
 
-        r = Report(builder=NAMESPACE.machine['_id'],
+        r = Report(builder=get_builder_id(),
                    job=job['_id'],
                    report=report,
                    package=job['package'])
@@ -83,6 +87,12 @@ class LucyInterface(object):
         job = Job.load(job)
         if job.is_finished():
             raise ValueError("job is already closed")
+
+        builder = job.get_builder()
+        builder = builder['_id'] if builder else None
+
+        if builder != get_builder_id():
+            raise ValueError("Machine isn't assigned.")
 
         job['finished_at'] = dt.datetime.utcnow()
         return job.save()
