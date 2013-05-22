@@ -1,6 +1,8 @@
+from lucy.models.package import Package
 from lucy.models.machine import Machine
 from lucy.models.report import Report
 from lucy.models.job import Job
+from lucy.core import get_config
 
 from xmlrpc.server import SimpleXMLRPCServer
 from xmlrpc.server import SimpleXMLRPCRequestHandler
@@ -50,6 +52,16 @@ class LucyInterface(object):
 
     def identify(self):
         return get_builder_id()
+
+    def get_dsc_url(self, package):
+        config = get_config()
+        package = Package.load(package)
+        url = "{public}/{path}/{source}_{version}.dsc".format(
+            public=config['public'],
+            path=package['path'],
+            source=package['source'],
+            version=package['version'])
+        return url
 
     def get_next_job(self, job_type):
         ajobs = list(Job.assigned_jobs(get_builder_id()))

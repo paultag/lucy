@@ -7,7 +7,8 @@
                 "source",
                 "amd64"
             ],
-            "pool": "/srv/lucy.pault.ag/pool"
+            "pool": "/srv/lucy.pault.ag/pool",
+            "public": "http://localhost/pool"
         }
     ],
     "machines": [
