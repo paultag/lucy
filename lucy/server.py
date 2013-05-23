@@ -78,7 +78,7 @@ class LucyInterface(object):
         job.save()
         return dict(job)
 
-    def submit_report(self, job, report):
+    def submit_report(self, job, report, log, failed):
         job = Job.load(job)
         if job.is_finished():
             raise ValueError("Job is finished")
@@ -90,9 +90,11 @@ class LucyInterface(object):
             raise ValueError("Machine isn't assigned.")
 
         r = Report(builder=get_builder_id(),
+                   package=job['package'],
                    job=job['_id'],
+                   failed=failed,
                    report=report,
-                   package=job['package'])
+                   log=log)
         return r.save()
 
     def close_job(self, job):
