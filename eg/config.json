@@ -6,11 +6,14 @@
             "job_classes": {
                 "binary": [
                     "piuparts",
-                    "adequate"
+                    "adequate",
+                    "lintian",
+                    "lintian4py"
                 ],
                 "source": [
-                    "cppcheck",
                     "desktop-file-validate",
+                    "perlcritic",
+                    "cppcheck",
                     "pep8"
                 ]
             },
