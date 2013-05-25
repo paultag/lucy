@@ -3,10 +3,17 @@
         {
             "_id": "default",
             "incoming": "/srv/lucy.pault.ag/incoming",
-            "job_classes": [
-                "source",
-                "amd64"
-            ],
+            "job_classes": {
+                "binary": [
+                    "piuparts",
+                    "adequate"
+                ],
+                "source": [
+                    "cppcheck",
+                    "desktop-file-validate",
+                    "pep8"
+                ]
+            },
             "pool": "/srv/lucy.pault.ag/pool",
             "public": "http://localhost/pool"
         }
