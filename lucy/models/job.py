@@ -1,6 +1,3 @@
-from lucy.models.source import Source
-from lucy.models.binary import Binary
-from lucy.models.machine import Machine
 from lucy.models import LucyObject
 
 
@@ -9,6 +6,10 @@ class Job(LucyObject):
 
     def __init__(self, type, package, package_type, builder=None,
                  finished_at=None, assigned_at=None, **kwargs):
+
+        from lucy.models.source import Source
+        from lucy.models.binary import Binary
+        from lucy.models.machine import Machine
 
         if package_type not in ["source", "binary"]:
             raise ValueError("package_type needs to be binary or source")

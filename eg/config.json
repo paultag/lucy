@@ -2,9 +2,6 @@
     "configs": [
         {
             "_id": "default",
-            "arches": [
-                "amd64"
-            ],
             "incoming": "/srv/lucy.pault.ag/incoming",
             "keyring": "/var/lib/lucy/keyring",
             "job_classes": {
@@ -18,7 +15,8 @@
                     "desktop-file-validate",
                     "perlcritic",
                     "cppcheck",
-                    "pep8"
+                    "pep8",
+                    "amd64"
                 ]
             },
             "pool": "/srv/lucy.pault.ag/pool",

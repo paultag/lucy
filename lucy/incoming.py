@@ -73,21 +73,21 @@ def accept_binary(config, changes):
     binaries = changes.get_files()
 
     try:
-        source = changes['x-lucy-source-package']
+        job = changes['x-lucy-job']
     except KeyError:
-        return reject(config, changes, 'no-source-package')
+        return reject(config, changes, 'no-job')
 
     try:
-        source = Source.load(source)
+        job = Job.load(source)
     except KeyError:
-        return reject(config, changes, 'invalid-source-package')
+        return reject(config, changes, 'invalid-job')
 
     try:
         buildd = Machine.get_by_key(key)
     except KeyError:
         return reject(config, changes, 'youre-not-a-machine')
 
-    binary = Binary(source=source['_id'],
+    binary = Binary(job=job['_id'],
                     arch=arch,
                     suite=suite,
                     binaries=[os.path.basename(x) for x in binaries],
