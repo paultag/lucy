@@ -3,7 +3,6 @@
         {
             "_id": "default",
             "incoming": "/srv/lucy.pault.ag/incoming",
-            "keyring": "/var/lib/lucy/keyring",
             "job_classes": {
                 "binary": [
                     "piuparts",
@@ -16,9 +15,10 @@
                     "perlcritic",
                     "cppcheck",
                     "pep8",
-                    "amd64"
+                    "unstable-amd64"
                 ]
             },
+            "keyring": "/var/lib/lucy/keyring",
             "pool": "/srv/lucy.pault.ag/pool",
             "public": "http://localhost/pool"
         }
@@ -27,14 +27,14 @@
         {
             "_id": "leliel",
             "auth": "password",
-            "owner": "paultag",
-            "gpg": "A998491ADCCB93C7A73A27403D3FDC7A47036CF7"
+            "gpg": "A998491ADCCB93C7A73A27403D3FDC7A47036CF7",
+            "owner": "paultag"
         },
         {
             "_id": "loki",
             "auth": "password",
-            "owner": "paultag",
-            "gpg": null
+            "gpg": null,
+            "owner": "paultag"
         }
     ],
     "users": [
