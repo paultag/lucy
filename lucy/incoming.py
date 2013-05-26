@@ -54,7 +54,6 @@ def accept_source(config, changes):
     os.unlink(changes.get_filename())
 
     print("ACCEPT: {source}/{version} for {owner} as {_id}".format(**obj))
-    # source jobs
     add_jobs(obj, 'source', config['job_classes']['source'])
 
 
