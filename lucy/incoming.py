@@ -78,7 +78,7 @@ def accept_binary(config, changes):
         return reject(config, changes, 'no-job')
 
     try:
-        job = Job.load(source)
+        job = Job.load(job)
     except KeyError:
         return reject(config, changes, 'invalid-job')
 
