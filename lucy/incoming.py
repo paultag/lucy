@@ -1,4 +1,4 @@
-from lucy import User, Source, Machine, Binary
+from lucy import User, Source, Machine, Binary, Job
 from lucy.archive import move_to_pool
 
 from lucy.changes import parse_changes_file, ChangesFileException
@@ -55,7 +55,15 @@ def accept_source(config, changes):
 
     print("ACCEPT: {source}/{version} for {owner} as {_id}".format(**obj))
     # source jobs
+    add_jobs(obj, 'source', config['job_classes']['source'])
 
+
+def add_jobs(package, package_type, types):
+    for type in types:
+        j = Job(package=package['_id'],
+                package_type=package_type,
+                type=type)
+        print("  -> Job: ", j.save(), type)
 
 
 def accept_binary(config, changes):
@@ -86,7 +94,7 @@ def accept_binary(config, changes):
                     binaries=[os.path.basename(x) for x in binaries],
                     builder=buildd['_id'])
     binary.save()
-    # binary jobs
+    add_jobs(binary, 'binary', config['job_classes']['binary'])
 
     path = move_to_pool(config, source, changes, root=arch)
     os.unlink(changes.get_filename())
