@@ -46,6 +46,7 @@ class LucyObject(dict):
     def query(cls, what):
         table = _get_table(cls._type)
         for x in table.find(what):
+            print(x)
             yield cls(**x)
 
     @classmethod

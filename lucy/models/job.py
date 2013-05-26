@@ -29,6 +29,7 @@ class Job(LucyObject):
             builder=builder,
             finished_at=finished_at,
             assigned_at=assigned_at,
+            package_type=package_type,
             **kwargs)
 
     def get_builder(self):

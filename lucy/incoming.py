@@ -53,6 +53,9 @@ def accept_source(config, changes):
     path = move_to_pool(config, obj, changes)
     os.unlink(changes.get_filename())
 
+    obj['path'] = path
+    obj.save()
+
     print("ACCEPT: {source}/{version} for {owner} as {_id}".format(**obj))
     add_jobs(obj, 'source', config['job_classes']['source'])
 
