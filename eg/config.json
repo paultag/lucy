@@ -29,13 +29,11 @@
             "_id": "leliel",
             "auth": "password",
             "owner": "paultag",
-            "gpg": "A998491ADCCB93C7A73A27403D3FDC7A47036CF7"
         },
         {
             "_id": "loki",
             "auth": "password",
             "owner": "paultag",
-            "gpg": null
         }
     ],
     "users": [
