@@ -15,3 +15,7 @@ class Machine(LucyObject):
 
     def auth(self, auth):
         return self['auth'] == auth
+
+    @classmethod
+    def get_by_key(cls, key):
+        return cls.single({"gpg": key})

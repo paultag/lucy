@@ -20,9 +20,9 @@ setup(
     platforms=['any'],
     entry_points={
         'console_scripts': [
-#            'lucy-nuke = lucy.cli.nuke:main',
-#            'lucy-process-incoming = lucy.cli.incoming:main',
-#            'lucy-init = lucy.cli.init:main',
+            'lucy-nuke = lucy.cli.nuke:main',
+            'lucy-process-incoming = lucy.cli.incoming:main',
+            'lucy-init = lucy.cli.init:main',
 #            'lucyd = lucy.server:main',
         ],
     }

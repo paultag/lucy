@@ -1,5 +1,5 @@
 from lucy.models.config import Config
-from lucy.archive import process
+from lucy.incoming import process
 
 
 def main():

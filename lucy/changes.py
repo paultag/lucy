@@ -117,7 +117,7 @@ class Changes(object):
                 return False
         return True
 
-    def is_binry_upload(self):
+    def is_binary_only_upload(self):
         for f in self.get_files():
             if not (f.endswith(".deb") or f.endswith(".udeb")):
                 return False

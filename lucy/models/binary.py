@@ -10,7 +10,6 @@ class Binary(LucyObject):
         source = Source.load(source)['_id']
 
         super(Binary, self).__init__(source=source,
-                                     log=log,
                                      arch=arch,
                                      suite=suite,
                                      builder=builder,
