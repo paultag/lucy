@@ -1,4 +1,5 @@
-from lucy.models.package import Package
+from lucy.models.source import Source
+from lucy.models.binary import Binary
 from lucy.models.machine import Machine
 from lucy.models import LucyObject
 
@@ -9,7 +10,10 @@ class Job(LucyObject):
     def __init__(self, type, package, builder=None, finished_at=None,
                  assigned_at=None, **kwargs):
 
-        package = Package.load(package)['_id']
+        try:
+            package = Source.load(package)['_id']
+        except KeyError:
+            package = Binary.load(package)['_id']
 
         if builder:
             builder = Machine.load(builder)['_id']

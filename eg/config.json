@@ -2,6 +2,9 @@
     "configs": [
         {
             "_id": "default",
+            "arches": [
+                "amd64"
+            ],
             "incoming": "/srv/lucy.pault.ag/incoming",
             "job_classes": {
                 "binary": [
@@ -25,12 +28,14 @@
         {
             "_id": "leliel",
             "auth": "password",
-            "owner": "paultag"
+            "owner": "paultag",
+            "gpg": "A998491ADCCB93C7A73A27403D3FDC7A47036CF7"
         },
         {
             "_id": "loki",
             "auth": "password",
-            "owner": "paultag"
+            "owner": "paultag",
+            "gpg": null
         }
     ],
     "users": [

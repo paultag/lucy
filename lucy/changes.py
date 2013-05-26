@@ -111,6 +111,18 @@ class Changes(object):
         if sys.version_info[0] >= 3:
             self.is_python3 = True
 
+    def is_source_only_upload(self):
+        for f in self.get_files():
+            if f.endswith(".deb") or f.endswith(".udeb"):
+                return False
+        return True
+
+    def is_binry_upload(self):
+        for f in self.get_files():
+            if not (f.endswith(".deb") or f.endswith(".udeb")):
+                return False
+        return True
+
     def get_filename(self):
         """
         Returns the filename from which the changes file was generated from.

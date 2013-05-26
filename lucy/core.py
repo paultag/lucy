@@ -6,11 +6,11 @@ db = connection.lucy
 config = None
 
 
-def get_config():
+def get_config(name='default'):
     global config
     if config:
         return config
 
     from lucy.models.config import Config
-    config = Config.load('default')
+    config = Config.load(name)
     return config
