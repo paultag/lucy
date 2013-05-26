@@ -7,12 +7,16 @@ from lucy.models import LucyObject
 class Job(LucyObject):
     _type = 'jobs'
 
-    def __init__(self, type, package, builder=None, finished_at=None,
-                 assigned_at=None, **kwargs):
+    def __init__(self, type, package, package_type, builder=None,
+                 finished_at=None, assigned_at=None, **kwargs):
 
-        try:
+        if package_type not in ["source", "binary"]:
+            raise ValueError("package_type needs to be binary or source")
+
+        if package_type == "source":
             package = Source.load(package)['_id']
-        except KeyError:
+
+        if package_type == "binary":
             package = Binary.load(package)['_id']
 
         if builder:
