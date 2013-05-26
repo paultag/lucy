@@ -1,4 +1,5 @@
 from lucy.models import LucyObject
+from lucy.models.machine import Machine
 
 
 class Job(LucyObject):
@@ -9,7 +10,6 @@ class Job(LucyObject):
 
         from lucy.models.source import Source
         from lucy.models.binary import Binary
-        from lucy.models.machine import Machine
 
         if package_type not in ["source", "binary"]:
             raise ValueError("package_type needs to be binary or source")

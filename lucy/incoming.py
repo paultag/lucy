@@ -50,7 +50,7 @@ def accept_source(config, changes):
                  owner=who['_id'])
     obj.save()
 
-    path = move_to_pool(config, obj, changes)
+    path = move_to_pool(config, obj['_id'], changes)
     os.unlink(changes.get_filename())
 
     obj['path'] = path
@@ -98,7 +98,7 @@ def accept_binary(config, changes):
     binary.save()
     add_jobs(binary, 'binary', config['job_classes']['binary'])
 
-    path = move_to_pool(config, source, changes, root=arch)
+    path = move_to_pool(config, binary['source'], changes, root=arch)
     os.unlink(changes.get_filename())
     print("accept binary")
 

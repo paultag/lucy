@@ -11,7 +11,7 @@ def uuid_to_path(uuid, base=None):
 
 def move_to_pool(config, package, changes, root=None):
     pool = config['pool']
-    uid = package['_id']
+    uid = package
     ret = uuid_to_path(uid, base=pool)
     path = os.path.join(pool, ret)
     if root:

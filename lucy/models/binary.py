@@ -6,13 +6,14 @@ class Binary(LucyObject):
 
     def __init__(self, job, arch, suite, binaries, builder, **kwargs):
         from lucy.models.job import Job
-        job = Job.load(job)['_id']
+        job = Job.load(job)
         if job['package_type'] != 'source':
             raise ValueError("Package from Job isn't a source package")
 
-        source = job['package']
+        if 'source' not in kwargs:
+            kwargs['source'] = job['package']
 
-        super(Binary, self).__init__(job=job,
+        super(Binary, self).__init__(job=job['_id'],
                                      arch=arch,
                                      suite=suite,
                                      builder=builder,
