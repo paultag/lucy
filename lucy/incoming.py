@@ -54,6 +54,7 @@ def accept_source(config, changes):
     os.unlink(changes.get_filename())
 
     print("ACCEPT: {source}/{version} for {owner} as {_id}".format(**obj))
+    # source jobs
 
 
 
@@ -79,16 +80,17 @@ def accept_binary(config, changes):
     except KeyError:
         return reject(config, changes, 'youre-not-a-machine')
 
-    print("accept binary")
     binary = Binary(source=source['_id'],
                     arch=arch,
                     suite=suite,
                     binaries=[os.path.basename(x) for x in binaries],
                     builder=buildd['_id'])
-    print(binary)
+    binary.save()
+    # binary jobs
 
     path = move_to_pool(config, source, changes, root=arch)
     os.unlink(changes.get_filename())
+    print("accept binary")
 
 
 def reject(config, changes, reason):
