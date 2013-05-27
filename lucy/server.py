@@ -15,32 +15,69 @@ NAMESPACE = threading.local()
 class LucyInterface(object):
 
     def get_source_package(self, package):
+        """
+        Get the DB entry for the source package. Return None if it doesn't
+        exist.
+        """
         pass
 
     def get_binary_package(self, package):
+        """
+        Get the DB entry for the binary package. Return None if it doesn't
+        exist.
+        """
         pass
 
-    def get_dsc(self):
+    def get_dsc(self, package):
+        """
+        Get the .dsc path if the package is a valid source package. Otherwise
+        return None.
+        """
         pass
 
-    def get_debs(self):
+    def get_debs(self, package):
+        """
+        Get a list of .debs for the given Binary package, otherwise None.
+        """
         pass
 
     #
 
     def get_current_job(self):
+        """
+        Get the current job for the builder or return None.
+        """
         pass
 
-    def get_lint_job(self):
+    def get_lint_job(self, types):
+        """
+        Get an unassigned lint job from type types.
+        """
         pass
 
-    def get_build_job(self):
+    def get_build_job(self, suites, arches):
+        """
+        Get an unassigned build job that is both in suites and arches.
+        """
         pass
 
     def submit_report(self, report, log, package, package_type, job, failed):
+        """
+        Submit a report from a run.
+
+        report - firehose lint job
+        log - full text of the run
+        package - related binary or source package
+        package_type - either source / binary
+        job - job ID this relates to
+        failed - was it able to complete properly
+        """
         pass
 
     def close_job(self, job):
+        """
+        Close a job after pushing reports / binaries up.
+        """
         pass
 
 
