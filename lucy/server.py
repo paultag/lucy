@@ -1,4 +1,4 @@
-from lucy import Machine, Job, Source
+from lucy import Machine, Job, Source, Binary
 from lucy.core import get_config
 
 from xmlrpc.server import SimpleXMLRPCServer
@@ -73,6 +73,15 @@ class LucyInterface(object):
             path=package['path'],
             source=package['source'],
             version=package['version'])
+        return url
+
+    def get_binary_base_url(self, package):
+        config = get_config()
+        package = Binary.load(package)
+        url = "{public}/{path}/{arch}".format(
+            public=config['public'],
+            path=package.get_source()['path'],
+            arch=package['arch'])
         return url
 
     def get_source(self, package):

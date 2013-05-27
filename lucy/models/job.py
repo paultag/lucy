@@ -23,6 +23,13 @@ class Job(LucyObject):
         if builder:
             builder = Machine.load(builder)['_id']
 
+        if type == 'build':
+            if 'arch' not in kwargs:
+                raise ValueError("Binary build but not target arch")
+
+            if 'suite' not in kwargs:
+                raise ValueError("Binary build but not target suite")
+
         super(Job, self).__init__(
             type=type,
             package=package,

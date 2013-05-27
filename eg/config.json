@@ -3,6 +3,12 @@
         {
             "_id": "default",
             "incoming": "/srv/lucy.pault.ag/incoming",
+            "arches": [
+                "amd64"
+            ],
+            "suites": [
+                "unstable"
+            ],
             "job_classes": {
                 "binary": [
                     "piuparts",
@@ -14,8 +20,7 @@
                     "desktop-file-validate",
                     "perlcritic",
                     "cppcheck",
-                    "pep8",
-                    "unstable-amd64"
+                    "pep8"
                 ]
             },
             "keyring": "/var/lib/lucy/keyring",

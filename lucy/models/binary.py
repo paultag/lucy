@@ -19,3 +19,7 @@ class Binary(LucyObject):
                                      builder=builder,
                                      binaries=binaries,
                                      **kwargs)
+
+    def get_source(self):
+        from lucy.models.source import Source
+        return Source.load(self['source'])
