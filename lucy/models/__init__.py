@@ -11,6 +11,7 @@ class LucyObject(dict):
     _type = None
 
     def __init__(self, **kwargs):
+        self['_type'] = self._type
         for k, v in kwargs.items():
             self[k] = v
 

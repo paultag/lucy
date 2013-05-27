@@ -23,7 +23,7 @@ setup(
             'lucy-nuke = lucy.cli.nuke:main',
             'lucy-process-incoming = lucy.cli.incoming:main',
             'lucy-init = lucy.cli.init:main',
-#            'lucyd = lucy.server:main',
+            'lucyd = lucy.server:main',
         ],
     }
 )
