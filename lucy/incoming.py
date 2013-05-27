@@ -57,15 +57,25 @@ def accept_source(config, changes):
     obj.save()
 
     print("ACCEPT: {source}/{version} for {owner} as {_id}".format(**obj))
-    add_jobs(obj, 'source', config['job_classes']['source'])
+    add_jobs(obj, 'source', config, 'source')
 
 
-def add_jobs(package, package_type, types):
-    for type in types:
+def add_jobs(package, package_type, config, klass):
+    for type in config['job_classes'][klass]:
         j = Job(package=package['_id'],
                 package_type=package_type,
                 type=type)
         print("  -> Job: ", j.save(), type)
+    if klass == 'source':
+        # add builds
+        for suite in config['suites']:
+            for arch in config['arches']:
+                j = Job(arch=arch,
+                        suite=suite,
+                        type='build',
+                        package=package['_id'],
+                        package_type=package_type)
+                print("  -> Bin: ", j.save(), arch, suite)
 
 
 def accept_binary(config, changes):
@@ -96,7 +106,7 @@ def accept_binary(config, changes):
                     binaries=[os.path.basename(x) for x in binaries],
                     builder=buildd['_id'])
     binary.save()
-    add_jobs(binary, 'binary', config['job_classes']['binary'])
+    add_jobs(binary, 'binary', config, 'binary')
 
     path = move_to_pool(config, binary['source'], changes, root=arch)
     os.unlink(changes.get_filename())
