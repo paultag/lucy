@@ -12,6 +12,41 @@ import threading
 NAMESPACE = threading.local()
 
 
+class LucyInterface(object):
+
+    def get_source_package(self, package):
+        pass
+
+    def get_binary_package(self, package):
+        pass
+
+    def get_dsc(self):
+        pass
+
+    def get_debs(self):
+        pass
+
+    #
+
+    def get_current_job(self):
+        pass
+
+    def get_lint_job(self):
+        pass
+
+    def get_build_job(self):
+        pass
+
+    def submit_report(self, report, log, package, package_type, job, failed):
+        pass
+
+    def close_job(self, job):
+        pass
+
+
+# =================== ok, boring shit below ===================
+
+
 def get_builder_id():
     return NAMESPACE.machine['_id']
 
@@ -41,82 +76,6 @@ class LucyAuthMixIn(SimpleXMLRPCRequestHandler):
 
 class AsyncXMLRPCServer(socketserver.ThreadingMixIn, LucyAuthMixIn):
     pass
-
-
-class LucyInterface(object):
-    def version(self):
-        return "1.0"
-
-    def identify(self):
-        return get_builder_id()
-
-    def get_next_job(self, job_type):
-        ajobs = list(Job.assigned_jobs(get_builder_id()))
-        if ajobs != []:
-            return dict(ajobs[0])
-
-        try:
-            job = Job.next_job(type=job_type)
-        except KeyError:
-            return None
-
-        job['builder'] = get_builder_id()
-        job['assigned_at'] = dt.datetime.utcnow()
-        job.save()
-        return dict(job)
-
-    def get_dsc_url(self, package):
-        config = get_config()
-        package = Source.load(package)
-        url = "{public}/{path}/{source}_{version}.dsc".format(
-            public=config['public'],
-            path=package['path'],
-            source=package['source'],
-            version=package['version'])
-        return url
-
-    def get_binary_base_url(self, package):
-        config = get_config()
-        package = Binary.load(package)
-        url = "{public}/{path}/{arch}".format(
-            public=config['public'],
-            path=package.get_source()['path'],
-            arch=package['arch'])
-        return url
-
-    def get_source(self, package):
-        return dict(Source.load(package))
-
-    def submit_report(self, job, report):
-        job = Job.load(job)
-        if job.is_finished():
-            raise ValueError("Job is finished")
-
-        builder = job.get_builder()
-        builder = builder['_id'] if builder else None
-
-        if builder != get_builder_id():
-            raise ValueError("Machine isn't assigned.")
-
-        r = Report(builder=get_builder_id(),
-                   job=job['_id'],
-                   report=report,
-                   package=job['package'])
-        return r.save()
-
-    def close_job(self, job):
-        job = Job.load(job)
-        if job.is_finished():
-            raise ValueError("job is already closed")
-
-        builder = job.get_builder()
-        builder = builder['_id'] if builder else None
-
-        if builder != get_builder_id():
-            raise ValueError("Machine isn't assigned.")
-
-        job['finished_at'] = dt.datetime.utcnow()
-        return job.save()
 
 
 def serve(server, port):
