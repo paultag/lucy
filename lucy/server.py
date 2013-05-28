@@ -10,6 +10,7 @@ import socketserver
 import threading
 
 NAMESPACE = threading.local()
+config = get_config()
 
 
 class LucyInterface(object):
@@ -19,35 +20,58 @@ class LucyInterface(object):
         Get the DB entry for the source package. Return None if it doesn't
         exist.
         """
-        pass
+        try:
+            return dict(Source.load(package))
+        except KeyError:
+            return None
 
     def get_binary_package(self, package):
         """
         Get the DB entry for the binary package. Return None if it doesn't
         exist.
         """
-        pass
+        try:
+            return dict(Binary.load(package))
+        except KeyError:
+            return None
 
     def get_dsc(self, package):
         """
         Get the .dsc path if the package is a valid source package. Otherwise
         return None.
         """
-        pass
+        public = config['public']
+        package = Source.load(package)
+        return "{public}/{pool}/{source}_{version}.dsc".format(
+            public=public,
+            pool=package['path'],
+            source=package['source'],
+            version=package['version']
+        )
 
-    def get_debs(self, package):
+    def get_deb_info(self, package):
         """
         Get a list of .debs for the given Binary package, otherwise None.
         """
-        pass
+        pkg = Binary.load(package)
+        source = pkg.get_source()
+        public = config['public']
+
+        root = "{public}/{pool}/{arch}".format(
+            public=public,
+            pool=source['path'],
+            arch=pkg['arch'],
+        )
+
+        return {"root": root, "packages": pkg['binaries']}
 
     #
 
-    def get_current_job(self):
+    def get_current_jobs(self):
         """
         Get the current job for the builder or return None.
         """
-        pass
+        return list(Job.assigned_jobs(get_builder_id()))
 
     def get_lint_job(self, types):
         """
