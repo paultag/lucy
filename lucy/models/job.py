@@ -64,6 +64,20 @@ class Job(LucyObject):
         return v
 
     @classmethod
+    def next_nonbuild_job(cls, types):
+        return cls.next_job(**{
+            "type": "build"
+        })
+
+    @classmethod
+    def next_build_job(cls, suites, arches):
+        return cls.next_job(**{
+            "type": "build",
+            "arch": {"$in": arches},
+            "suite": {"$in": suites},
+        })
+
+    @classmethod
     def unfinished_jobs(cls, **kwargs):
         k = kwargs.copy()
         k.update({"finished_at": None})

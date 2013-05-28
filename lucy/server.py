@@ -1,4 +1,4 @@
-from lucy import Machine, Job, Source, Binary
+from lucy import Machine, Job, Source, Binary, Report
 from lucy.core import get_config
 
 from xmlrpc.server import SimpleXMLRPCServer
@@ -73,17 +73,17 @@ class LucyInterface(object):
         """
         return list(Job.assigned_jobs(get_builder_id()))
 
-    def get_lint_job(self, types):
+    def get_new_build_job(self, suites, arches):
+        """
+        Get an unassigned lint job from suite suites, arches arches
+        """
+        return dict(Job.next_build_job(suites, arches))
+
+    def get_new_nonbuild_job(self, types):
         """
         Get an unassigned lint job from type types.
         """
-        pass
-
-    def get_build_job(self, suites, arches):
-        """
-        Get an unassigned build job that is both in suites and arches.
-        """
-        pass
+        return dict(Job.next_nonbuild_job(types))
 
     def submit_report(self, report, log, package, package_type, job, failed):
         """
@@ -96,13 +96,22 @@ class LucyInterface(object):
         job - job ID this relates to
         failed - was it able to complete properly
         """
-        pass
+        report = Report(report=report,
+                        log=log,
+                        builder=get_builder_id(),
+                        package=package,
+                        package_type=package_type,
+                        job=job,
+                        failed=failed)
+        return report.save()
 
     def close_job(self, job):
         """
         Close a job after pushing reports / binaries up.
         """
-        pass
+        j = Job.load(job)
+        j['finished_at'] = dt.datetime.utcnow()
+        return j.save()
 
 
 # =================== ok, boring shit below ===================
