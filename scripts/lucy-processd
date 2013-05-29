@@ -1,0 +1,7 @@
+#!/bin/bash
+
+inoticoming \
+    --foreground \
+    /srv/lucy.pault.ag/incoming/ \
+    --suffix .changes lucy-process-incoming \
+    \;

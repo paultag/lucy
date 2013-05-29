@@ -14,21 +14,31 @@ class Report(LucyObject):
         if package_type not in ["source", "binary"]:
             raise ValueError("Bad package type")
 
+        loaded_package = None
         if package_type == 'source':
-            package = Source.load(package)
+            try:
+                loaded_package = Source.load(package)
+            except KeyError:
+                pass
 
         if package_type == 'binary':
-            package = Binary.load(package)
+            try:
+                loaded_package = Binary.load(package)
+            except KeyError:
+                pass
+
+        if loaded_package is None:
+            raise KeyError("No such package")
 
         builder = Machine.load(builder)['_id']
-        package = Package.load(package)['_id']
+
         job = Job.load(job)['_id']
 
         super(Report, self).__init__(package_type=package_type,
                                      builder=builder,
-                                     package=package,
+                                     package=loaded_package['_id'],
                                      report=report,
+                                     job=job,
                                      failed=failed,
                                      log=log,
-                                     job=job,
                                      **kwargs)

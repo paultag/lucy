@@ -34,6 +34,16 @@ class Job(LucyObject):
             package_type=package_type,
             **kwargs)
 
+    def get_package(self):
+        from lucy.models.source import Source
+        from lucy.models.binary import Binary
+
+        if self['package_type'] == 'binary':
+            return Binary.load(self['package'])
+
+        if self['package_type'] == 'source':
+            return Source.load(self['package'])
+
     def get_builder(self):
         builder = self.get('builder', None)
         if builder is None:

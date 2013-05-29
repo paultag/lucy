@@ -36,6 +36,12 @@
             "owner": "paultag"
         },
         {
+            "_id": "chayot",
+            "auth": "password",
+            "gpg": "BDCF0DF8B500A91BFDD26103ED557BBBC1EB3C94", 
+            "owner": "paultag"
+        },
+        {
             "_id": "loki",
             "auth": "password",
             "gpg": null,

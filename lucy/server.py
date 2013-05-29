@@ -87,23 +87,23 @@ class LucyInterface(object):
         nj.save()
         return dict(nj)
 
-    def submit_report(self, report, log, package, package_type, job, failed):
+    def submit_report(self, report, log, job, failed):
         """
         Submit a report from a run.
 
         report - firehose lint job
         log - full text of the run
-        package - related binary or source package
-        package_type - either source / binary
         job - job ID this relates to
         failed - was it able to complete properly
         """
+        job = Job.load(job)
+        package = job.get_package()
         report = Report(report=report,
                         log=log,
                         builder=get_builder_id(),
-                        package=package,
-                        package_type=package_type,
-                        job=job,
+                        package=package['_id'],
+                        package_type=job['package_type'],
+                        job=job['_id'],
                         failed=failed)
         return report.save()
 
