@@ -77,7 +77,13 @@ class LucyInterface(object):
         """
         Get an unassigned lint job from suite suites, arches arches
         """
-        return dict(Job.next_job(suites, arches))
+        nj = Job.next_job(suites, arches)
+        if nj is None:
+            return None
+        nj['assigned_at'] = dt.datetime.utcnow()
+        nj['builder'] = get_builder_id()
+        nj.save()
+        return dict(nj)
 
     def submit_report(self, report, log, package, package_type, job, failed):
         """
