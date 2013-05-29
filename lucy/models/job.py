@@ -52,10 +52,11 @@ class Job(LucyObject):
             yield x
 
     @classmethod
-    def next_job(cls, suites, arches, **kwargs):
+    def next_job(cls, suites, arches, types, **kwargs):
         k = kwargs.copy()
         k.update({"builder": None,
                   "finished_at": None,
+                  "type": {"$in": types},
                   "suite": {"$in": suites},
                   "arch": {"$in": arches}})
         v = cls.single(k)
