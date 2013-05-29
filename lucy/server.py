@@ -46,7 +46,7 @@ class LucyInterface(object):
             public=public,
             pool=package['path'],
             source=package['source'],
-            version=package['version']
+            version=package['version'],
         )
 
     def get_deb_info(self, package):
@@ -73,17 +73,11 @@ class LucyInterface(object):
         """
         return list(Job.assigned_jobs(get_builder_id()))
 
-    def get_new_build_job(self, suites, arches):
+    def get_next_job(self, suites, arches):
         """
         Get an unassigned lint job from suite suites, arches arches
         """
-        return dict(Job.next_build_job(suites, arches))
-
-    def get_new_nonbuild_job(self, types):
-        """
-        Get an unassigned lint job from type types.
-        """
-        return dict(Job.next_nonbuild_job(types))
+        return dict(Job.next_job(suites, arches))
 
     def submit_report(self, report, log, package, package_type, job, failed):
         """

@@ -5,8 +5,8 @@ from lucy.models.machine import Machine
 class Job(LucyObject):
     _type = 'jobs'
 
-    def __init__(self, type, package, package_type, builder=None,
-                 finished_at=None, assigned_at=None, **kwargs):
+    def __init__(self, type, package, package_type, arch, suite,
+                 builder=None, finished_at=None, assigned_at=None, **kwargs):
 
         from lucy.models.source import Source
         from lucy.models.binary import Binary
@@ -23,15 +23,10 @@ class Job(LucyObject):
         if builder:
             builder = Machine.load(builder)['_id']
 
-        if type == 'build':
-            if 'arch' not in kwargs:
-                raise ValueError("Binary build but not target arch")
-
-            if 'suite' not in kwargs:
-                raise ValueError("Binary build but not target suite")
-
         super(Job, self).__init__(
             type=type,
+            arch=arch,
+            suite=suite,
             package=package,
             builder=builder,
             finished_at=finished_at,
@@ -57,25 +52,14 @@ class Job(LucyObject):
             yield x
 
     @classmethod
-    def next_job(cls, **kwargs):
+    def next_job(cls, suites, arches, **kwargs):
         k = kwargs.copy()
-        k.update({"builder": None, "finished_at": None})
+        k.update({"builder": None,
+                  "finished_at": None,
+                  "suite": {"$in": suites},
+                  "arch": {"$in": arches}})
         v = cls.single(k)
         return v
-
-    @classmethod
-    def next_nonbuild_job(cls, types):
-        return cls.next_job(**{
-            "type": "build"
-        })
-
-    @classmethod
-    def next_build_job(cls, suites, arches):
-        return cls.next_job(**{
-            "type": "build",
-            "arch": {"$in": arches},
-            "suite": {"$in": suites},
-        })
 
     @classmethod
     def unfinished_jobs(cls, **kwargs):

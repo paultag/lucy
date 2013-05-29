@@ -61,11 +61,22 @@ def accept_source(config, changes):
 
 
 def add_jobs(package, package_type, config, klass):
+
     for type in config['job_classes'][klass]:
+        if klass == 'source':
+            suite = None
+            arch = None
+        else:
+            suite = package['suite']
+            arch = package['arch']
+
         j = Job(package=package['_id'],
                 package_type=package_type,
+                suite=suite,
+                arch=arch,
                 type=type)
         print("  -> Job: ", j.save(), type)
+
     if klass == 'source':
         # add builds
         for suite in config['suites']:
