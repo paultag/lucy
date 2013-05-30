@@ -1,5 +1,7 @@
-from lucy.models import LucyObject
+import datetime as dt
+
 from lucy.models.machine import Machine
+from lucy.models import LucyObject
 
 
 class Job(LucyObject):
@@ -71,6 +73,16 @@ class Job(LucyObject):
                   "arch": {"$in": arches}})
         v = cls.single(k)
         return v
+
+    @classmethod
+    def dead_jobs(cls, howlong, **kwargs):
+        cutoff = dt.datetime.utcnow() - howlong
+        for x in cls.unfinished_jobs(**{
+            "assigned_at": {"$lt": cutoff},
+            "builder": {"$ne": None},
+            "finished_at": None
+        }):
+            yield x
 
     @classmethod
     def unfinished_jobs(cls, **kwargs):
