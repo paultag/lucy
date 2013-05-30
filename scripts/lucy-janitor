@@ -1,13 +1,19 @@
 #!/usr/bin/env python
 
 from lucy.models.job import Job
+from lucy.cli.incoming import main as process_incoming
 
 import datetime as dt
 import schedule
 import time
 
 
-def job():
+def cron():
+    process_incoming()
+    cleanup_jobs()
+
+
+def cleanup_jobs():
     length = dt.timedelta(hours=2)
     jobs = Job.dead_jobs(length)
     for job in jobs:
@@ -17,7 +23,7 @@ def job():
         print("Pushing %s back into the pool" % (job['_id']))
 
 
-schedule.every(5).minutes.do(job)
+schedule.every(30).seconds.do(cron)
 
 
 while True:
