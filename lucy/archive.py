@@ -1,3 +1,4 @@
+import shutil
 import os
 
 
@@ -16,6 +17,10 @@ def move_to_pool(config, package, changes, root=None):
     path = os.path.join(pool, ret)
     if root:
         path = os.path.join(path, root)
+
+    if os.path.exists(path):
+        shutil.rmtree(path)  # odd. very odd.
+
     os.makedirs(path)
     for entry in changes.get_files():
         bn = os.path.basename(entry)

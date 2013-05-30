@@ -73,6 +73,16 @@ class LucyInterface(object):
         """
         return list(Job.assigned_jobs(get_builder_id()))
 
+    def forfeit_job(self, job):
+        j = Job.load(job)
+        buildd = j.get_builder()
+        if buildd['_id'] != get_builder_id():
+            return None  # meh
+
+        j['assigned_at'] = None
+        j['builder'] = None
+        return j.save()
+
     def get_next_job(self, suites, arches, types):
         """
         Get an unassigned lint job from suite suites, arches arches
