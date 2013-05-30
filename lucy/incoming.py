@@ -4,6 +4,7 @@ from lucy.archive import move_to_pool
 from lucy.changes import parse_changes_file, ChangesFileException
 from lucy.core import get_config
 from lucy.utils import cd, fglob
+#from lucy.mail import send_mail
 
 import os
 
@@ -57,6 +58,9 @@ def accept_source(config, changes):
     obj.save()
 
     print("ACCEPT: {source}/{version} for {owner} as {_id}".format(**obj))
+    #send_mail("ACCEPTED: {source}/{version} for {owner} as {_id}".format(
+    #    **obj), who['email'], "ACCEPTED!")
+
     add_jobs(obj, 'source', config, 'source')
 
 
