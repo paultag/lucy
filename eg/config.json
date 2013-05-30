@@ -2,13 +2,10 @@
     "configs": [
         {
             "_id": "default",
-            "incoming": "/srv/lucy.pault.ag/incoming",
             "arches": [
                 "amd64"
             ],
-            "suites": [
-                "unstable"
-            ],
+            "incoming": "/srv/lucy.pault.ag/incoming",
             "job_classes": {
                 "binary": [
                     "piuparts",
@@ -25,7 +22,10 @@
             },
             "keyring": "/var/lib/lucy/keyring",
             "pool": "/srv/lucy.pault.ag/pool",
-            "public": "http://localhost/pool"
+            "public": "http://localhost/pool",
+            "suites": [
+                "unstable"
+            ]
         }
     ],
     "machines": [
@@ -38,13 +38,13 @@
         {
             "_id": "chayot",
             "auth": "password",
-            "gpg": "BDCF0DF8B500A91BFDD26103ED557BBBC1EB3C94", 
+            "gpg": "BDCF0DF8B500A91BFDD26103ED557BBBC1EB3C94",
             "owner": "paultag"
         },
         {
             "_id": "loki",
             "auth": "password",
-            "gpg": null,
+            "gpg": "C1C274ACEA4F7879378DC6960943D06F6CA9F2D8",
             "owner": "paultag"
         }
     ],
