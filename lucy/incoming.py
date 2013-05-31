@@ -61,10 +61,10 @@ def accept_source(config, changes):
     #send_mail("ACCEPTED: {source}/{version} for {owner} as {_id}".format(
     #    **obj), who['email'], "ACCEPTED!")
 
-    add_jobs(obj, 'source', config, 'source')
+    add_jobs(obj, 'source', config, 'source', changes)
 
 
-def add_jobs(package, package_type, config, klass):
+def add_jobs(package, package_type, config, klass, changes):
 
     for type in config['job_classes'][klass]:
         if klass == 'source':
@@ -83,14 +83,14 @@ def add_jobs(package, package_type, config, klass):
 
     if klass == 'source':
         # add builds
-        for suite in config['suites']:
-            for arch in config['arches']:
-                j = Job(arch=arch,
-                        suite=suite,
-                        type='build',
-                        package=package['_id'],
-                        package_type=package_type)
-                print("  -> Bin: ", j.save(), arch, suite)
+        suite = changes['Distribution']
+        for arch in config['arches']:
+            j = Job(arch=arch,
+                    suite=suite,
+                    type='build',
+                    package=package['_id'],
+                    package_type=package_type)
+            print("  -> Bin: ", j.save(), arch, suite)
 
 
 def accept_binary(config, changes):
@@ -121,7 +121,7 @@ def accept_binary(config, changes):
                     binaries=[os.path.basename(x) for x in binaries],
                     builder=buildd['_id'])
     binary.save()
-    add_jobs(binary, 'binary', config, 'binary')
+    add_jobs(binary, 'binary', config, 'binary', changes)
 
     path = move_to_pool(config, binary['source'], changes, root=arch)
     os.unlink(changes.get_filename())
