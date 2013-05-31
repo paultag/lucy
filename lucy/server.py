@@ -118,11 +118,10 @@ class LucyInterface(object):
                         job=job['_id'],
                         failed=failed)
 
-        path = os.path.join(
-            config['pool'],
-            uuid_to_path(job['_id'])
-        )
-        os.makedirs(path)
+        path = os.path.join(config['pool'], uuid_to_path(job['_id']))
+        if not os.path.exists(path):
+            os.makedirs(path)
+
         path = os.path.join(path, 'log')
 
         with open(path, 'w') as fd:

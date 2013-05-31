@@ -1,5 +1,7 @@
 #!/bin/bash
 
+lucy-process-incoming
+
 inoticoming \
     --foreground \
     /srv/lucy.pault.ag/incoming/ \

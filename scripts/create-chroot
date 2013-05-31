@@ -1,0 +1,14 @@
+#!/bin/bash
+
+SUITE=$1
+MIRROR=$2
+NAME=$3
+
+if [ "x${NAME}" = "x" ]; then
+    echo "${0} unstable http://debian.lcs.mit.edu/debian/ unstable-amd64"
+    exit 1
+fi
+
+sudo sbuild-createchroot \
+    --make-sbuild-tarball=/var/lib/ethel/chroots/${NAME}.tar.gz \
+    ${SUITE} `mktemp -d` ${MIRROR}
