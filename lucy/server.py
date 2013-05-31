@@ -98,7 +98,7 @@ class LucyInterface(object):
         nj.save()
         return dict(nj)
 
-    def submit_report(self, report, job, failed):
+    def submit_report(self, report, log, job, failed):
         """
         Submit a report from a run.
 
