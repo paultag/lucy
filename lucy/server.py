@@ -1,4 +1,5 @@
 from lucy import Machine, Job, Source, Binary, Report
+from lucy.archive import uuid_to_path
 from lucy.core import get_config
 
 from xmlrpc.server import SimpleXMLRPCServer
@@ -97,7 +98,7 @@ class LucyInterface(object):
         nj.save()
         return dict(nj)
 
-    def submit_report(self, report, log, job, failed):
+    def submit_report(self, report, job, failed):
         """
         Submit a report from a run.
 
@@ -109,12 +110,22 @@ class LucyInterface(object):
         job = Job.load(job)
         package = job.get_package()
         report = Report(report=report,
-                        log=log,
                         builder=get_builder_id(),
                         package=package['_id'],
                         package_type=job['package_type'],
                         job=job['_id'],
                         failed=failed)
+
+        path = os.path.join(
+            config['pool'],
+            uuid_to_path(job['_id'])
+        )
+        os.makedirs(path)
+        path = os.path.join(path, 'log')
+
+        with open(path, 'w') as fd:
+            fd.write(log)
+
         return report.save()
 
     def close_job(self, job):

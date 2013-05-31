@@ -8,7 +8,7 @@ from lucy.models.job import Job
 class Report(LucyObject):
     _type = 'reports'
 
-    def __init__(self, report, log, builder, package,
+    def __init__(self, report, builder, package,
                  package_type, job, failed, **kwargs):
 
         if package_type not in ["source", "binary"]:
@@ -40,5 +40,4 @@ class Report(LucyObject):
                                      report=report,
                                      job=job,
                                      failed=failed,
-                                     log=log,
                                      **kwargs)
