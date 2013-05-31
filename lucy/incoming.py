@@ -68,8 +68,8 @@ def add_jobs(package, package_type, config, klass, changes):
 
     for type in config['job_classes'][klass]:
         if klass == 'source':
-            suite = None
-            arch = None
+            suite = "unstable"
+            arch = "all"
         else:
             suite = package['suite']
             arch = package['arch']
@@ -97,6 +97,18 @@ def accept_binary(config, changes):
     key = changes.validate_signature()
 
     arch = changes['Architecture']
+    if " " in arch:
+        arches = set(arch.split(" "))
+        if "all" in arches:
+            arches.remove("all")
+
+        arches = list(arches)
+        if len(arches) != 1:
+            return reject(config, changes, 'too-many-arches')
+
+        arch = changes._data['Architecture'] = arches[0]
+
+
     suite = changes['Distribution']
     binaries = changes.get_files()
 

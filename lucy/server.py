@@ -155,6 +155,7 @@ class LucyAuthMixIn(SimpleXMLRPCRequestHandler):
         machine = Machine.load(machine)
         if machine.auth(password):
             NAMESPACE.machine = machine
+            machine.ping()
             return True
         NAMESPACE.machine = None
         return False
