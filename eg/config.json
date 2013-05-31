@@ -24,7 +24,9 @@
             "pool": "/srv/lucy.pault.ag/pool",
             "public": "http://localhost/pool",
             "suites": [
-                "unstable"
+                "unstable",
+                "testing",
+                "stable"
             ]
         }
     ],
