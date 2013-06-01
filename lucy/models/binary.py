@@ -23,3 +23,8 @@ class Binary(LucyObject):
     def get_source(self):
         from lucy.models.source import Source
         return Source.load(self['source'])
+
+    def get_reports(self):
+        from lucy.models.report import Report
+        for x in Report.query({"package": self['_id']}):
+            yield x
