@@ -14,6 +14,19 @@ class Source(LucyObject):
                                      **kwargs)
 
 
-    def get_pending_jobs(self):
+    def get_owner(self):
+        return User.load(self['owner'])
+
+    def get_jobs(self):
         for x in Job.by_package(self['_id']):
+            yield x
+
+    def get_reports(self):
+        from lucy.models.report import Report
+        for x in Report.query({"package": self['_id']}):
+            yield x
+
+    def get_binaries(self):
+        from lucy.models.binary import Binary
+        for x in Binary.query({"source": self['_id']}):
             yield x
