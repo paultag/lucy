@@ -9,7 +9,7 @@ class Report(LucyObject):
     _type = 'reports'
 
     def __init__(self, report, builder, package,
-                 package_type, job, failed, **kwargs):
+                 package_type, job, failed, type=None, **kwargs):
 
         if package_type not in ["source", "binary"]:
             raise ValueError("Bad package type")
@@ -34,10 +34,14 @@ class Report(LucyObject):
 
         job = Job.load(job)['_id']
 
+        if type is None:
+            type = job['type']
+
         super(Report, self).__init__(package_type=package_type,
                                      builder=builder,
                                      package=loaded_package['_id'],
                                      report=report,
                                      job=job,
+                                     type=type,
                                      failed=failed,
                                      **kwargs)
