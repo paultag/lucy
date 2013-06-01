@@ -46,6 +46,11 @@ class Job(LucyObject):
         if self['package_type'] == 'source':
             return Source.load(self['package'])
 
+    def get_reports(self):
+        from lucy.models.report import Report
+        for x in Report.query({"job": self['_id']}):
+            yield x
+
     def get_builder(self):
         builder = self.get('builder', None)
         if builder is None:
@@ -82,6 +87,11 @@ class Job(LucyObject):
             "builder": {"$ne": None},
             "finished_at": None
         }):
+            yield x
+
+    @classmethod
+    def by_package(cls, package, **kwargs):
+        for x in cls.query({"package": package}):
             yield x
 
     @classmethod

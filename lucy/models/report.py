@@ -32,7 +32,7 @@ class Report(LucyObject):
 
         builder = Machine.load(builder)['_id']
 
-        job = Job.load(job)['_id']
+        job = Job.load(job)
 
         if type is None:
             type = job['type']
@@ -41,7 +41,7 @@ class Report(LucyObject):
                                      builder=builder,
                                      package=loaded_package['_id'],
                                      report=report,
-                                     job=job,
+                                     job=job['_id'],
                                      type=type,
                                      failed=failed,
                                      **kwargs)
