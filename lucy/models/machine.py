@@ -22,6 +22,9 @@ class Machine(LucyObject):
     def get_by_key(cls, key):
         return cls.single({"gpg": key})
 
+    def get_owner(self):
+        return User.load(self['owner'])
+
     def ping(self):
         self['last_ping'] = dt.datetime.utcnow()
         self.save()

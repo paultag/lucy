@@ -42,3 +42,8 @@ class Source(LucyObject):
             "finished_at": None
         }).count()
         return (total, unfinished)
+
+    @classmethod
+    def get_uploads_for_user(cls, who):
+        for x in cls.query({"owner": who}):
+            yield x

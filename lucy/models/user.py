@@ -19,4 +19,8 @@ class User(LucyObject):
     def get_by_key(cls, key):
         return cls.single({"gpg": key})
 
+    def get_uploads(self):
+        from lucy import Source
+        return Source.get_uploads_for_user(self['_id'])
+
     get_by_uid = LucyObject.load
