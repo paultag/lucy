@@ -45,11 +45,10 @@ class LucyInterface(object):
         """
         public = config['public']
         package = Source.load(package)
-        return "{public}/{pool}/{source}_{version}.dsc".format(
+        return "{public}/{pool}/{dsc}".format(
             public=public,
             pool=package['path'],
-            source=package['source'],
-            version=package['version'],
+            dsc=package['dsc'],
         )
 
     def get_deb_info(self, package):

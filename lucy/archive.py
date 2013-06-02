@@ -26,14 +26,4 @@ def move_to_pool(config, package, changes, root=None):
         bn = os.path.basename(entry)
         dest = os.path.join(path, bn)
         os.rename(entry, dest)
-        if entry.endswith(".dsc"):
-            guessed_name = "{source}_{version}.dsc".format(
-                source=changes['source'],
-                version=changes['version'],
-            )
-            guessed_path = os.path.join(path, guessed_name)
-            if not os.path.exists(guessed_path):
-                dest = os.path.abspath(dest)
-                os.symlink(dest, guessed_path)
-
     return ret

@@ -46,9 +46,12 @@ def accept_source(config, changes):
     except KeyError:
         return reject(changes, config, 'bad-user-account')
 
+    dsc = changes.get_dsc()
+
     obj = Source(source=changes['source'],
                  version=changes['version'],
-                 owner=who['_id'])
+                 owner=who['_id'],
+                 dsc=dsc)
     obj.save()
 
     path = move_to_pool(config, obj['_id'], changes)
