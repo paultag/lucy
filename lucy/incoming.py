@@ -46,7 +46,7 @@ def accept_source(config, changes):
     except KeyError:
         return reject(changes, config, 'bad-user-account')
 
-    dsc = changes.get_dsc()
+    dsc = os.path.basename(changes.get_dsc())
 
     obj = Source(source=changes['source'],
                  version=changes['version'],
