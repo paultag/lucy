@@ -99,12 +99,11 @@ class LucyInterface(object):
         nj.save()
         return dict(nj)
 
-    def submit_report(self, report, log, job, failed):
+    def submit_report(self, report, job, failed):
         """
         Submit a report from a run.
 
         report - firehose lint job
-        log - full text of the run
         job - job ID this relates to
         failed - was it able to complete properly
         """
@@ -124,13 +123,7 @@ class LucyInterface(object):
             os.makedirs(path)
 
         path = os.path.join(path, 'log')
-
-        with open(path, 'w') as fd:
-            fd.write(log)
-
         report['log_path'] = os.path.join(uuid_path, 'log')
-        report.save()
-
         return report.save()
 
     def close_job(self, job):
