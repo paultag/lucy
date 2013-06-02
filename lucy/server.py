@@ -189,7 +189,7 @@ def serve(server, port):
 
 
 def main():
-    serve("localhost", 20017)
+    serve("0.0.0.0", 20017)
 
 
 if __name__ == "__main__":
