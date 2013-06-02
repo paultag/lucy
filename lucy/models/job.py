@@ -111,10 +111,10 @@ class Job(LucyObject):
     @classmethod
     def unfinished_jobs(cls, **kwargs):
         k = kwargs.copy()
-        k.update({"finished_at": None})
+        k.update({"finished_at": None,
+                  "builder": {"$ne": None}})
 
-        for x in cls.query(k):
-            yield x
+        return cls.query(k)
 
     @classmethod
     def assigned_jobs(cls, builder, **kwargs):
