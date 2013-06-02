@@ -1,6 +1,7 @@
 from lucy.models import LucyObject
 from lucy.models.user import User
 from lucy.models.job import Job
+import lucy.core
 
 
 class Source(LucyObject):
@@ -30,3 +31,14 @@ class Source(LucyObject):
         from lucy.models.binary import Binary
         for x in Binary.query({"source": self['_id']}):
             yield x
+
+    def get_job_status(self):
+        db = lucy.core.db
+        total = db.jobs.find({
+            "source": self['_id']
+        }).count()
+        unfinished = db.jobs.find({
+            "source": self['_id'],
+            "finished_at": None
+        }).count()
+        return (total, unfinished)

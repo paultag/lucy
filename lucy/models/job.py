@@ -8,7 +8,8 @@ class Job(LucyObject):
     _type = 'jobs'
 
     def __init__(self, type, package, package_type, arch, suite,
-                 builder=None, finished_at=None, assigned_at=None, **kwargs):
+                 builder=None, finished_at=None, assigned_at=None,
+                 source=None, **kwargs):
 
         from lucy.models.source import Source
         from lucy.models.binary import Binary
@@ -17,18 +18,31 @@ class Job(LucyObject):
             raise ValueError("package_type needs to be binary or source")
 
         if package_type == "source":
-            package = Source.load(package)['_id']
+            package = Source.load(package)
+            if source is None:
+                source = package['_id']
 
         if package_type == "binary":
-            package = Binary.load(package)['_id']
+            package = Binary.load(package)
+            if source is None:
+                source = package['source']
+
+        if package is None:
+            raise ValueError("Bad package")
+
+        package = package['_id']
 
         if builder:
             builder = Machine.load(builder)['_id']
+
+        if source is None:
+            raise ValueError("Bad source :(")
 
         super(Job, self).__init__(
             type=type,
             arch=arch,
             suite=suite,
+            source=source,
             package=package,
             builder=builder,
             finished_at=finished_at,
