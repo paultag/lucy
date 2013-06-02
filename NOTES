@@ -1,0 +1,1 @@
+db.jobs.update({"builder": "loki", "finished_at": null}, {"$set": {"builder": null}}, multi=true, safe=true)
