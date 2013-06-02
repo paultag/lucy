@@ -22,6 +22,13 @@ class Source(LucyObject):
         for x in Job.by_package(self['_id']):
             yield x
 
+    def get_pending_jobs(self):
+        for x in Job.query({
+            "source": self['_id'],
+            "finished_at": None
+        }):
+            yield x
+
     def get_reports(self):
         from lucy.models.report import Report
         for x in Report.query({"package": self['_id']}):
