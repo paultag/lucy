@@ -1,6 +1,7 @@
 from lucy import Machine, Job, Source, Binary, Report
 from lucy.archive import uuid_to_path
 from lucy.core import get_config
+from lucy.mail import send_mail
 
 from xmlrpc.server import SimpleXMLRPCServer
 from xmlrpc.server import SimpleXMLRPCRequestHandler
@@ -14,6 +15,22 @@ import os
 
 NAMESPACE = threading.local()
 config = get_config()
+
+
+def send_failed_email(job, package, report):
+    source = package
+    if package._type == 'binaries':
+        source = package.get_source()
+    uploader = source.get_owner()
+
+    send_mail(
+        'failed',
+        uploader=uploader,
+        package=package,
+        job=job,
+        report=report,
+        source=source
+    )
 
 
 class LucyInterface(object):
@@ -128,7 +145,12 @@ class LucyInterface(object):
             os.makedirs(path)
 
         report['log_path'] = os.path.join(uuid_path, 'log')
-        return report.save()
+        rid = report.save()
+
+        if failed:
+            send_failed_email(job, package, report)
+
+        return rid
 
     def close_job(self, job):
         """

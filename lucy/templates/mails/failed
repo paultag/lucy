@@ -1,9 +1,7 @@
 To: {{uploader.email}}
+From: lucy@debuild.me
 CC: paultag@debian.org
 Subject: FAILED: {{job.type}}: {{source.source}}/{{source.version}}
-X-Lucy-Job: {{job._id}}
-X-Lucy-Package: {{package._id}}
-X-Lucy-Report: {{report._id}}
 
 Hello, {{uploader.name}},
 
