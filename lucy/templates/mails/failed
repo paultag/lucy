@@ -1,0 +1,13 @@
+To: {{uploader.email}}
+CC: paultag@debian.org
+Subject: FAILED: {{job.type}}: {{source.source}}/{{source.version}}
+X-Lucy-Job: {{job._id}}
+X-Lucy-Package: {{package._id}}
+X-Lucy-Report: {{report._id}}
+
+Hello, {{uploader.name}},
+
+You've got a failed report sent up.
+
+Thanks,
+  Lucy, Ethel, Fred, & Ricky
