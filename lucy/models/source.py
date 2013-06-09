@@ -7,10 +7,11 @@ import lucy.core
 class Source(LucyObject):
     _type = 'sources'
 
-    def __init__(self, source, version, owner, dsc, **kwargs):
+    def __init__(self, source, version, owner, dsc, group=None, **kwargs):
         owner = User.load(owner)['_id']
         super(Source, self).__init__(source=source,
                                      version=version,
+                                     group=group,
                                      owner=owner,
                                      dsc=dsc,
                                      **kwargs)

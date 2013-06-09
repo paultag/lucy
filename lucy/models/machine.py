@@ -28,3 +28,11 @@ class Machine(LucyObject):
     def ping(self):
         self['last_ping'] = dt.datetime.utcnow()
         self.save()
+
+    def get_jobs(self):
+        from lucy.models.job import Job
+        return Job.assigned_jobs(self['_id'])
+
+    @classmethod
+    def get_builders(cls):
+        return cls.query({})
