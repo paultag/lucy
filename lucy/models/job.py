@@ -108,6 +108,31 @@ class Job(LucyObject):
         for x in cls.query({"package": package}):
             yield x
 
+    def is_pending(self):
+        if self['finished_at'] is None:
+            return True
+        return False
+
+    def is_failed(self):
+        for report in self.get_reports():
+            if not report['failed']:
+                return False
+        return True
+
+    def is_critical(self):
+        if self['type'] in [
+            "build",
+            "piuparts",
+            "adequite",
+        ]:
+            return True
+        return False
+
+    @classmethod
+    def by_source(cls, source, **kwargs):
+        for x in cls.query({"source": source}):
+            yield x
+
     @classmethod
     def unfinished_jobs(cls, **kwargs):
         k = {}

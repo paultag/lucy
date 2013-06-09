@@ -41,6 +41,10 @@ class Source(LucyObject):
         for x in Binary.query({"source": self['_id']}):
             yield x
 
+    def get_all_jobs(self):
+        from lucy.models.source import Source
+        return Job.by_source(self['_id'])
+
     def get_job_status(self):
         db = lucy.core.db
         total = db.jobs.find({
