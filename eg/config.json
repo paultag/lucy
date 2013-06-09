@@ -58,6 +58,12 @@
             "email": "tag@pault.ag",
             "gpg": "57DC4BD33F73E0CDBA98D22AF7EBEE8EB7982329",
             "name": "Paul R. Tagliamonte"
+        },
+        {
+            "_id": "rebuilder",
+            "email": "paultag@debian.org",
+            "gpg": "2EA5C67F0A37D37C64C7B5EDC0A1FC9FD80D7B69",
+            "name": "Archive Rebuilder"
         }
     ]
 }

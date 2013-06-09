@@ -48,9 +48,14 @@ def accept_source(config, changes):
 
     dsc = os.path.basename(changes.get_dsc())
 
+    group = None
+    if 'X-Lucy-Group' in changes:
+        group = changes['X-Lucy-Group']
+
     obj = Source(source=changes['source'],
                  version=changes['version'],
                  owner=who['_id'],
+                 group=group,
                  dsc=dsc)
     obj.save()
 
