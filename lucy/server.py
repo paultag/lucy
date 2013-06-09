@@ -18,6 +18,8 @@ config = get_config()
 
 
 def send_failed_email(job, package, report):
+    return  # fixme
+
     source = package
     if package._type == 'binaries':
         source = package.get_source()
