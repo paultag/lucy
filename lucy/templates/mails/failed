@@ -1,6 +1,5 @@
 To: {{uploader.email}}
 From: lucy@debuild.me
-CC: paultag@debian.org
 Subject: FAILED: {{job.type}}: {{source.source}}/{{source.version}}
 
 Hello, {{uploader.name}},
