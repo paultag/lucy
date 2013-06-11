@@ -60,9 +60,11 @@ class Job(LucyObject):
         if self['package_type'] == 'source':
             return Source.load(self['package'])
 
-    def get_reports(self):
+    def get_reports(self, spec):
         from lucy.models.report import Report
-        for x in Report.query({"job": self['_id']}):
+        spec = spec.copy()
+        spec.update({"job": self['_id']})
+        for x in Report.query(spec):
             yield x
 
     def get_builder(self):
