@@ -30,6 +30,21 @@
                 "testing",
                 "stable"
             ]
+        },
+        {
+            "_id": "auto-rebuild",
+            "job_classes": {
+                "binary": [
+                    "piuparts",
+                    "adequate",
+                    "lintian",
+                    "lintian4py"
+                ],
+                "source": [
+                    "lintian",
+                    "lintian4py"
+                ]
+            }
         }
     ],
     "machines": [
