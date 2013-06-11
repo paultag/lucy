@@ -14,10 +14,6 @@
                     "lintian4py"
                 ],
                 "source": [
-                    "desktop-file-validate",
-                    "perlcritic",
-                    "cppcheck",
-                    "pep8",
                     "lintian",
                     "lintian4py"
                 ]
@@ -30,21 +26,6 @@
                 "testing",
                 "stable"
             ]
-        },
-        {
-            "_id": "auto-rebuild",
-            "job_classes": {
-                "binary": [
-                    "piuparts",
-                    "adequate",
-                    "lintian",
-                    "lintian4py"
-                ],
-                "source": [
-                    "lintian",
-                    "lintian4py"
-                ]
-            }
         }
     ],
     "machines": [

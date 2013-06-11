@@ -133,8 +133,7 @@ class Job(LucyObject):
 
     @classmethod
     def by_source(cls, source, **kwargs):
-        for x in cls.query({"source": source}):
-            yield x
+        return cls.query({"source": source})
 
     @classmethod
     def unfinished_jobs(cls, **kwargs):
