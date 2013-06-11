@@ -114,7 +114,11 @@ class Job(LucyObject):
         return False
 
     def is_failed(self):
-        return self.get_reports({"failed": False}).count() != 0
+        try:
+            next(self.get_reports({"failed": False}))
+            return False
+        except StopIteration:
+            return True
 
     def is_critical(self):
         if self['type'] in [
