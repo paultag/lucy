@@ -60,6 +60,10 @@ class Job(LucyObject):
         if self['package_type'] == 'source':
             return Source.load(self['package'])
 
+    def get_source(self):
+        from lucy.models.source import Source
+        return Source.load(self['source'])
+
     def get_reports(self, spec):
         from lucy.models.report import Report
         spec = spec.copy()
