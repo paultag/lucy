@@ -147,22 +147,43 @@ class LucyInterface(object):
 
 
 def get_builder_id():
+    if NAMESPACE.machine is None:
+        raise KeyError("What the shit, doing something you can't do")
     return NAMESPACE.machine['_id']
+
+
+def get_user_id():
+    if NAMESPACE.user is None:
+        raise KeyError("What the shit, doing something you can't do")
+    return NAMESPACE.user['_id']
 
 
 class LucyAuthMixIn(SimpleXMLRPCRequestHandler):
     def authenticate(self):
+        NAMESPACE.machine = None
+        NAMESPACE.user = None
         (basic, _, encoded) = self.headers.get('Authorization').partition(' ')
         if basic.lower() != 'basic':
             self.send_error(401, 'Only allowed basic type thing')
+        entity, password = b64decode(encoded.encode()).decode().split(":", 1)
 
-        machine, password = b64decode(encoded.encode()).decode().split(":", 1)
+        if self.authenticate_machine(entity, password):
+            return True
+        return self.authenticate_user()
+
+    def authenticate_user(self, user, password):
+        user = User.load(user)
+        if user.auth(password):
+            NAMESPACE.user = user
+            return True
+        return False
+
+    def authenticate_machine(self, machine, password):
         machine = Machine.load(machine)
         if machine.auth(password):
             NAMESPACE.machine = machine
             machine.ping()
             return True
-        NAMESPACE.machine = None
         return False
 
     def parse_request(self, *args):

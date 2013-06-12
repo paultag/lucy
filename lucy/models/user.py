@@ -4,8 +4,9 @@ from lucy.models import LucyObject
 class User(LucyObject):
     _type = 'users'
 
-    def __init__(self, _id, name, email, gpg, **kwargs):
+    def __init__(self, _id, auth, name, email, gpg, **kwargs):
         super(User, self).__init__(_id=_id,
+                                   auth=auth,
                                    gpg=gpg,
                                    name=name,
                                    email=email,
@@ -22,5 +23,8 @@ class User(LucyObject):
     def get_uploads(self):
         from lucy import Source
         return Source.get_uploads_for_user(self['_id'])
+
+    def auth(self, auth):
+        return self['auth'] == auth
 
     get_by_uid = LucyObject.load
