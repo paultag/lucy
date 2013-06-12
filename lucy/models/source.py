@@ -7,11 +7,13 @@ import lucy.core
 class Source(LucyObject):
     _type = 'sources'
 
-    def __init__(self, source, version, owner, **kwargs):
+    def __init__(self, source, version, owner, dsc, group=None, **kwargs):
         owner = User.load(owner)['_id']
         super(Source, self).__init__(source=source,
                                      version=version,
+                                     group=group,
                                      owner=owner,
+                                     dsc=dsc,
                                      **kwargs)
 
 
@@ -38,6 +40,10 @@ class Source(LucyObject):
         from lucy.models.binary import Binary
         for x in Binary.query({"source": self['_id']}):
             yield x
+
+    def get_all_jobs(self):
+        from lucy.models.source import Source
+        return Job.by_source(self['_id'])
 
     def get_job_status(self):
         db = lucy.core.db

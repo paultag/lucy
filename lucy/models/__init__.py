@@ -44,9 +44,25 @@ class LucyObject(dict):
         return cls.from_dict(obj)
 
     @classmethod
-    def query(cls, what):
+    def query(cls, what, sort=None, sort_order=1,
+              limit=None, page_count=None, page=0):
+
         table = _get_table(cls._type)
-        for x in table.find(what):
+        pointer = table.find(what)
+        if sort:
+            pointer = pointer.sort(sort, sort_order)
+
+        if limit:
+            pointer = pointer.limit(limit)
+
+        if page and page_count:
+            offset = int(page) * int(page_count)
+            pointer = pointer.skip(offset)
+
+        if page_count:
+            pointer = pointer.limit(page_count)
+
+        for x in pointer:
             yield cls(**x)
 
     @classmethod

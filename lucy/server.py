@@ -1,6 +1,7 @@
 from lucy import Machine, Job, Source, Binary, Report
 from lucy.archive import uuid_to_path
 from lucy.core import get_config
+from lucy.mail import send_mail
 
 from xmlrpc.server import SimpleXMLRPCServer
 from xmlrpc.server import SimpleXMLRPCRequestHandler
@@ -14,6 +15,24 @@ import os
 
 NAMESPACE = threading.local()
 config = get_config()
+
+
+def send_failed_email(job, package, report):
+    return  # fixme
+
+    source = package
+    if package._type == 'binaries':
+        source = package.get_source()
+    uploader = source.get_owner()
+
+    send_mail(
+        'failed',
+        uploader=uploader,
+        package=package,
+        job=job,
+        report=report,
+        source=source
+    )
 
 
 class LucyInterface(object):
@@ -45,12 +64,16 @@ class LucyInterface(object):
         """
         public = config['public']
         package = Source.load(package)
-        return "{public}/{pool}/{source}_{version}.dsc".format(
+        return "{public}/{pool}/{dsc}".format(
             public=public,
             pool=package['path'],
-            source=package['source'],
-            version=package['version'],
+            dsc=package['dsc'],
         )
+
+    def get_log_write_location(self, report):
+        report = Report.load(report)
+        path = os.path.join(config['pool'], report['log_path'])
+        return path
 
     def get_deb_info(self, package):
         """
@@ -100,12 +123,11 @@ class LucyInterface(object):
         nj.save()
         return dict(nj)
 
-    def submit_report(self, report, log, job, failed):
+    def submit_report(self, report, job, failed):
         """
         Submit a report from a run.
 
         report - firehose lint job
-        log - full text of the run
         job - job ID this relates to
         failed - was it able to complete properly
         """
@@ -124,15 +146,13 @@ class LucyInterface(object):
         if not os.path.exists(path):
             os.makedirs(path)
 
-        path = os.path.join(path, 'log')
-
-        with open(path, 'w') as fd:
-            fd.write(log)
-
         report['log_path'] = os.path.join(uuid_path, 'log')
-        report.save()
+        rid = report.save()
 
-        return report.save()
+        if failed:
+            send_failed_email(job, package, report)
+
+        return rid
 
     def close_job(self, job):
         """

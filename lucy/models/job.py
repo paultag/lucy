@@ -60,9 +60,15 @@ class Job(LucyObject):
         if self['package_type'] == 'source':
             return Source.load(self['package'])
 
-    def get_reports(self):
+    def get_source(self):
+        from lucy.models.source import Source
+        return Source.load(self['source'])
+
+    def get_reports(self, spec):
         from lucy.models.report import Report
-        for x in Report.query({"job": self['_id']}):
+        spec = spec.copy()
+        spec.update({"job": self['_id']})
+        for x in Report.query(spec):
             yield x
 
     def get_builder(self):
@@ -108,13 +114,39 @@ class Job(LucyObject):
         for x in cls.query({"package": package}):
             yield x
 
+    def is_pending(self):
+        if self['finished_at'] is None:
+            return True
+        return False
+
+    def is_failed(self):
+        try:
+            next(self.get_reports({"failed": False}))
+            return False
+        except StopIteration:
+            return True
+
+    def is_critical(self):
+        if self['type'] in [
+            "build",
+            "piuparts",
+            "adequite",
+        ]:
+            return True
+        return False
+
+    @classmethod
+    def by_source(cls, source, **kwargs):
+        return cls.query({"source": source})
+
     @classmethod
     def unfinished_jobs(cls, **kwargs):
-        k = kwargs.copy()
-        k.update({"finished_at": None})
+        k = {}
+        k.update({"finished_at": None,
+                  "builder": {"$ne": None}})
+        k.update(kwargs.copy())
 
-        for x in cls.query(k):
-            yield x
+        return cls.query(k)
 
     @classmethod
     def assigned_jobs(cls, builder, **kwargs):

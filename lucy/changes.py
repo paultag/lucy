@@ -246,7 +246,7 @@ class Changes(object):
         else:
             self._directory = ""
 
-    def validate(self, check_hash="sha1", check_signature=True):
+    def validate(self, check_hash="md5", check_signature=True):
         """
         See :meth:`validate_checksums` for ``check_hash``, and
         :meth:`validate_signature` if ``check_signature`` is True.
@@ -299,7 +299,7 @@ class Changes(object):
                 key = line.split()[2]
         return key
 
-    def validate_checksums(self, check_hash="sha1"):
+    def validate_checksums(self, check_hash="md5"):
         """
         Validate checksums for a package, using ``check_hack``'s type
         to validate the package.

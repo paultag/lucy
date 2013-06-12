@@ -1,0 +1,10 @@
+To: {{uploader.email}}
+From: lucy@debuild.me
+Subject: FAILED: {{job.type}}: {{source.source}}/{{source.version}}
+
+Hello, {{uploader.name}},
+
+You've got a failed report sent up.
+
+Thanks,
+  Lucy, Ethel, Fred, & Ricky

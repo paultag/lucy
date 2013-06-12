@@ -1,0 +1,41 @@
+#!/usr/bin/mongo lucy
+
+db.binaries.ensureIndex({"package": 1});
+db.binaries.ensureIndex({"package": -1});
+db.binaries.ensureIndex({"source": -1});
+db.binaries.ensureIndex({"source": 1});
+db.jobs.ensureIndex({"package": -1});
+db.jobs.ensureIndex({"package": 1});
+db.jobs.ensureIndex({"job": 1});
+db.jobs.ensureIndex({"job": -1});
+db.jobs.ensureIndex({"builder": -1});
+db.jobs.ensureIndex({"builder": 1});
+db.jobs.ensureIndex({"finished_at": 1});
+db.jobs.ensureIndex({"finished_at": -1});
+db.jobs.ensureIndex({"builder": 1, "finished_at": 1, "type": 1, "suite": 1, "arch": 1});
+db.jobs.ensureIndex({"builder": -1, "finished_at": -1, "type": -1, "suite": -1, "arch": -1});
+db.jobs.ensureIndex({"assigned_at": 1, "builder": 1, "finished_at": 1});
+db.jobs.ensureIndex({"assigned_at": -1, "builder": -1, "finished_at": -1});
+db.jobs.ensureIndex({"builder": -1, "finished_at": -1});
+db.machines.ensureIndex({"gpg": 1});
+db.machines.ensureIndex({"gpg": -1});
+db.machines.ensureIndex({"owner": -1});
+db.machines.ensureIndex({"owner": 1});
+db.machines.ensureIndex({"auth": 1});
+db.machines.ensureIndex({"auth": -1});
+db.machines.ensureIndex({"last_ping": 1});
+db.machines.ensureIndex({"last_ping": -1});
+db.reports.ensureIndex({"package": 1});
+db.reports.ensureIndex({"package": -1});
+db.sources.ensureIndex({"owner": 1});
+db.sources.ensureIndex({"owner": -1});
+db.reports.ensureIndex({"package": -1});
+db.reports.ensureIndex({"package": 1});
+db.binaries.ensureIndex({"source": 1});
+db.binaries.ensureIndex({"source": -1});
+db.users.ensureIndex({"email": 1});
+db.users.ensureIndex({"email": -1});
+db.users.ensureIndex({"gpg": 1});
+db.users.ensureIndex({"gpg": -1});
+
+print("complete.");
