@@ -35,6 +35,25 @@ def send_failed_email(job, package, report):
     )
 
 
+def machine_method(fn):
+    def _(*args, **kwargs):
+        try:
+            get_builder_id()
+            fn(*args, **kwargs)
+        except KeyError:
+            raise Exception("You can't do that")
+    return _
+
+
+def user_method(fn):
+    def _(*args, **kwargs):
+        try:
+            get_user_id()
+            fn(*args, **kwargs)
+        except KeyError:
+            raise Exception("You can't do that")
+
+
 class LucyInterface(object):
 
     def get_source_package(self, package):
@@ -93,12 +112,14 @@ class LucyInterface(object):
 
     #
 
+    @machine_method
     def get_current_jobs(self):
         """
         Get the current job for the builder or return None.
         """
         return list(Job.assigned_jobs(get_builder_id()))
 
+    @machine_method
     def forfeit_job(self, job):
         j = Job.load(job)
         buildd = j.get_builder()
@@ -109,6 +130,7 @@ class LucyInterface(object):
         j['builder'] = None
         return j.save()
 
+    @machine_method
     def get_next_job(self, suites, arches, types):
         """
         Get an unassigned lint job from suite suites, arches arches
@@ -123,6 +145,7 @@ class LucyInterface(object):
         nj.save()
         return dict(nj)
 
+    @machine_method
     def submit_report(self, report, job, failed):
         """
         Submit a report from a run.
@@ -154,6 +177,7 @@ class LucyInterface(object):
 
         return rid
 
+    @machine_method
     def close_job(self, job):
         """
         Close a job after pushing reports / binaries up.
