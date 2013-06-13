@@ -39,7 +39,7 @@ def machine_method(fn):
     def _(*args, **kwargs):
         try:
             get_builder_id()
-            fn(*args, **kwargs)
+            return fn(*args, **kwargs)
         except KeyError:
             raise Exception("You can't do that")
     return _
@@ -49,9 +49,10 @@ def user_method(fn):
     def _(*args, **kwargs):
         try:
             get_user_id()
-            fn(*args, **kwargs)
+            return fn(*args, **kwargs)
         except KeyError:
             raise Exception("You can't do that")
+    return _
 
 
 class LucyInterface(object):
