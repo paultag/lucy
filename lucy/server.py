@@ -3,8 +3,8 @@ from lucy.archive import uuid_to_path
 from lucy.core import get_config
 from lucy.mail import send_mail
 
-from xmlrpc.server import SimpleXMLRPCServer
-from xmlrpc.server import SimpleXMLRPCRequestHandler
+from SimpleXMLRPCServer import SimpleXMLRPCServer
+from SimpleXMLRPCServer import SimpleXMLRPCRequestHandler
 
 from base64 import b64decode
 import datetime as dt
