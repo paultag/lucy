@@ -232,7 +232,7 @@ class LucyAuthMixIn(SimpleXMLRPCRequestHandler):
         return False
 
     def parse_request(self, *args):
-        if super(LucyAuthMixIn, self).parse_request(*args):
+        if SimpleXMLRPCRequestHandler.parse_request(self, *args):
             if self.authenticate():
                 return True
             else:
