@@ -8,7 +8,7 @@ from SimpleXMLRPCServer import SimpleXMLRPCRequestHandler
 
 from base64 import b64decode
 import datetime as dt
-import socketserver
+import SocketServer
 import threading
 import os.path
 import os
@@ -240,7 +240,7 @@ class LucyAuthMixIn(SimpleXMLRPCRequestHandler):
         return False
 
 
-class AsyncXMLRPCServer(socketserver.ThreadingMixIn, LucyAuthMixIn):
+class AsyncXMLRPCServer(SocketServer.ThreadingMixIn, LucyAuthMixIn):
     pass
 
 
