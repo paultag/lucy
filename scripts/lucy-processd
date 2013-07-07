@@ -2,6 +2,7 @@
 
 lucy-process-incoming
 
+#FIXME: hardcoded path :(
 inoticoming \
     --foreground \
     /srv/lucy.pault.ag/incoming/ \
