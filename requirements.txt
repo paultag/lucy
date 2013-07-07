@@ -2,4 +2,5 @@ pymongo
 nose
 clint
 schedule
+jinja2
 -e git://github.com/fantix/gevent.git#egg=gevent
