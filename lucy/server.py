@@ -95,6 +95,11 @@ class LucyInterface(object):
         path = os.path.join(config['pool'], report['log_path'])
         return path
 
+    def get_firehose_write_location(self, report):
+        report = Report.load(report)
+        path = os.path.join(config['pool'], report['firehose_path'])
+        return path
+
     def get_deb_info(self, package):
         """
         Get a list of .debs for the given Binary package, otherwise None.
@@ -171,6 +176,7 @@ class LucyInterface(object):
             os.makedirs(path)
 
         report['log_path'] = os.path.join(uuid_path, 'log')
+        report['firehose_path'] = os.path.join(uuid_path, 'firehose.xml')
         rid = report.save()
 
         if failed:
